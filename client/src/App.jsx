@@ -1,0 +1,30 @@
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from 'antd';
+import Navbar from './components/navbar';
+import Dashboard from './components/Dashboard';
+import GanttView from './components/GanttView';
+import TeamList from './components/TeamList';
+
+import TeamProjectCreateForm from './components/TeamProjectCreateForm';
+
+function App() {
+  
+
+  return (
+    <>
+      <Layout>
+      <Navbar />
+      <Layout.Content style={{ padding: '24px' }}>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/teams" element={<TeamList />} />
+          <Route path="/teams/:id" element={<GanttView />} />
+          <Route path="/create" element={<TeamProjectCreateForm />} />
+        </Routes>
+      </Layout.Content>
+    </Layout>
+    </>
+  )
+}
+
+export default App
