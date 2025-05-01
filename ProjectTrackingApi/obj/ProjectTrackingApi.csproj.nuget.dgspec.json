@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj": {}
+    "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj": {
+    "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
+        "projectUniqueName": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
         "projectName": "ProjectTrackingApi",
-        "projectPath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
+        "projectPath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
         "packagesPath": "C:\\Users\\omerr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\obj\\",
+        "outputPath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\omerr\\AppData\\Roaming\\NuGet\\NuGet.Config",

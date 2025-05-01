@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Gu83EK9GSFA+VEo1DOqnwXRley3JExOd/tMWvlRWG+2pK3dcsBOv15wuBheeezHZ8w17cmFjtl7X6EORFG8d+w==",
+  "dgSpecHash": "eZ616sCbBtQi25jRg1FJMmgSSDLJo+EP1G95pP8l8FXc6sp76iv6FBJoWyk9yyVUNZb/6ATECD+DKOXTcGQMdQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
+  "projectFilePath": "C:\\Users\\omerr\\Desktop\\4ARC-Project\\4ARC-Project\\ProjectTrackingApi\\ProjectTrackingApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\omerr\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\omerr\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
