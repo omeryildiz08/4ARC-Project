@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { Form, Input, DatePicker, Button, message } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const { Item } = Form;
 
@@ -9,7 +10,7 @@ function TeamProjectCreateForm() {
   //takım adı girilecek
   //Proje adı ve aşama tarihleri (Dev, Test, UAT, Prod) girilecek
   //submit ile hem takım hem proje birlikte apiye post edilecek
-
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const onFinish = async (values) => {
     try {
@@ -40,6 +41,7 @@ function TeamProjectCreateForm() {
 
       message.success('Takım ve proje başarıyla oluşturuldu!');
       form.resetFields();
+      navigate(`/teams/${teamId}/members`);
     } catch (error) {
       console.error(error);
       message.error('Bir hata oluştu!');

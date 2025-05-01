@@ -4,6 +4,7 @@ import Navbar from './components/navbar';
 import Dashboard from './components/Dashboard';
 import GanttView from './components/GanttView';
 import TeamList from './components/TeamList';
+import TeamMemberPage from './components/TeamMemberPage';
 
 import TeamProjectCreateForm from './components/TeamProjectCreateForm';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/teams" element={<TeamList />} />
           <Route path="/teams/:id" element={<GanttView />} />
           <Route path="/create" element={<TeamProjectCreateForm />} />
+          <Route path="/teams/:teamId/members" element={<TeamMemberPage />} />
         </Routes>
       </Layout.Content>
     </Layout>
