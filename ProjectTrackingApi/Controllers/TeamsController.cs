@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Data;
 using ProjectTrackingApi.Models;
+using ProjectTrackingApi.Models.Dtos;
 
 namespace ProjectTrackingApi.Controllers
 {
@@ -64,7 +65,7 @@ namespace ProjectTrackingApi.Controllers
                 if (result != null)
                 {
                     team.TeamId = Convert.ToInt32(result); // team nesnesine ID'yi yaz
-                    return Ok(team); 
+                    return Ok(team);
                 }
                 else
                 {
@@ -72,6 +73,85 @@ namespace ProjectTrackingApi.Controllers
                 }
             }
         }
+
+        [HttpGet("{id}/ProjectDetails")]
+        public IActionResult GetTeamProjectDetails(int id)
+        {
+            TeamProjectDetailsDto dto = new TeamProjectDetailsDto();
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                //takım bilgilerini al
+                string teamQuery = "SELECT TeamName FROM Teams WHERE TeamId = @TeamId";
+                using (SqlCommand cmd = new SqlCommand(teamQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TeamId", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            dto.TeamName = reader["TeamName"].ToString();
+                        }
+                        else
+                        {
+                            return NotFound("Team not found.");
+                        }
+                    }
+                }
+
+
+                //proje bilgilerini al
+                string projectQuery = @"SELECT ProjectName, DevDate, TestDate, UATDate,ProdDate FROM Projects WHERE TeamId = @TeamId";
+
+                using (SqlCommand cmd = new SqlCommand(projectQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TeamId", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            dto.Project = new TeamProjectDetailsDto.ProjectInfo
+                            {
+                                ProjectName = reader["ProjectName"].ToString(),
+                                DevDate = Convert.ToDateTime(reader["DevDate"]),
+                                TestDate = Convert.ToDateTime(reader["TestDate"]),
+                                UATDate = Convert.ToDateTime(reader["UATDate"]),
+                                ProdDate = Convert.ToDateTime(reader["ProdDate"])
+                            };
+                        }
+                    }
+                }
+
+
+                //üye bilgilerini al
+                string memberQuery = "SELECT Name, Role FROM Members WHERE TeamId = @TeamId";
+                using (SqlCommand cmd = new SqlCommand(memberQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@TeamId", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dto.Members = new List<TeamProjectDetailsDto.MemberInfo>();
+                        while (reader.Read())
+                        {
+                            dto.Members.Add(new TeamProjectDetailsDto.MemberInfo
+                            {
+                                Name = reader["Name"].ToString(),
+                                Role = reader["Role"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            return Ok(dto);
+        }
+
+
+
+
+
 
 
     }
