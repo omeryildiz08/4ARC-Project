@@ -148,7 +148,38 @@ namespace ProjectTrackingApi.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("WithProjects")]
+        public IActionResult GetTeamWithProjects()
+        {
+            List<TeamWithProjectDto> teamWithProjects = new List<TeamWithProjectDto>();
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT t.TeamId, t.TeamName, p.ProjectName
+            FROM Teams t
+            INNER JOIN Projects p ON t.TeamId = p.TeamId
+                ";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+                
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        teamWithProjects.Add(new TeamWithProjectDto
+                        {
+                            TeamId = Convert.ToInt32(reader["TeamId"]),
+                            TeamName = reader["TeamName"].ToString(),
+                            ProjectName = reader["ProjectName"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return Ok(teamWithProjects);
+        }
 
 
 

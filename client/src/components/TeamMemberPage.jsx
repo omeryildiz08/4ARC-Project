@@ -7,7 +7,7 @@ const TeamMemberPage = () => {
   const navigate = useNavigate();
 
   const handleFinishAll = () => {
-    navigate(`/teams/${teamId}/gantt`);
+    navigate(`/teams/${teamId}`)
   };
 
   return (
