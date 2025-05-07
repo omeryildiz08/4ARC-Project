@@ -6,7 +6,7 @@ const Dashboard = () => {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '100px' }}>
-      <Typography.Title level={2}>4arc Proje Takip Paneline Hoş Geldiniz</Typography.Title>
+      <Typography.Title level={2}>4ARC Proje Takip Paneline Hoş Geldiniz</Typography.Title>
       <Button type="primary" size="large" onClick={() => navigate('/create')}>
     
         <Link to="/create">Yeni Takım/Proje Oluştur</Link>

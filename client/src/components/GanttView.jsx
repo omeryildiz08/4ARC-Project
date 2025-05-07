@@ -52,7 +52,7 @@ function GanttView() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Proje Aşamaları (Gantt)</h2>
+      <h2>Proje Fazları</h2>
       <GanttChart data={ganttData} onTaskAdded={handleTaskAdded} />
     </div>
   );

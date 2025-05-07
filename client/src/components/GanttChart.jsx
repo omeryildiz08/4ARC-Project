@@ -87,7 +87,7 @@ const GanttChart = ({ data, onTaskAdded }) => {
   return (
     <div style={{ padding: "20px" }}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Proje Gantt Şeması</h2>
+        <h2 className="text-xl font-semibold">{data.teamName} Gantt Şeması</h2>
         <Button 
           type="primary" 
           onClick={showAddTaskModal}

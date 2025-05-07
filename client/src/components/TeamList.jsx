@@ -43,7 +43,7 @@ function TeamList() {
 
   return (
     <div style={{ padding: "24px" }}>
-      <h2>Projeleri Olan Takımlar</h2>
+      <h2>Projeler</h2>
       <Row gutter={[16, 16]}>
         {teams.map((team) => (
           <Col xs={24} sm={12} md={8} lg={6} key={team.id}>
