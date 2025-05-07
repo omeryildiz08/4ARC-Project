@@ -64,3 +64,5 @@ C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\obj\Debug\ne
 C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\obj\Debug\net6.0\ProjectTrackingApi.pdb
 C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\obj\Debug\net6.0\ProjectTrackingApi.genruntimeconfig.cache
 C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\obj\Debug\net6.0\ref\ProjectTrackingApi.dll
+C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\bin\Debug\net6.0\Dapper.dll
+C:\Users\omerr\Desktop\4ARC-Project\4ARC-Project\ProjectTrackingApi\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll

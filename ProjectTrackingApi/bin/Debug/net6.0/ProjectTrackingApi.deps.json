@@ -8,11 +8,32 @@
     ".NETCoreApp,Version=v6.0": {
       "ProjectTrackingApi/1.0.0": {
         "dependencies": {
+          "Dapper": "2.1.66",
           "Swashbuckle.AspNetCore": "6.5.0",
           "System.Data.SqlClient": "4.9.0"
         },
         "runtime": {
           "ProjectTrackingApi.dll": {}
+        }
+      },
+      "Dapper/2.1.66": {
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "9.0.1",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Dapper.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.66.48463"
+          }
+        }
+      },
+      "Microsoft.Bcl.AsyncInterfaces/9.0.1": {
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
+            "assemblyVersion": "9.0.0.1",
+            "fileVersion": "9.0.124.61010"
+          }
         }
       },
       "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
@@ -120,7 +141,8 @@
             "fileVersion": "4.900.24.56208"
           }
         }
-      }
+      },
+      "System.Reflection.Emit.Lightweight/4.7.0": {}
     }
   },
   "libraries": {
@@ -128,6 +150,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Dapper/2.1.66": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/q77jUgDOS+bzkmk3Vy9SiWMaetTw+NOoPAV0xPBsGVAyljd5S6P+4RUW7R3ZUGGr9lDRyPKgAMj2UAOwvqZYw==",
+      "path": "dapper/2.1.66",
+      "hashPath": "dapper.2.1.66.nupkg.sha512"
+    },
+    "Microsoft.Bcl.AsyncInterfaces/9.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IVkmUqf+KzbuXKrxi2tyQlg11RArYk26t2eU5cHekff+7Ao09vH8vt8idC0BJSMnpiRV2OK66zM2EwJU6Tm5Cw==",
+      "path": "microsoft.bcl.asyncinterfaces/9.0.1",
+      "hashPath": "microsoft.bcl.asyncinterfaces.9.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "type": "package",
@@ -205,6 +241,13 @@
       "sha512": "sha512-j4KJO+vC62NyUtNHz854njEqXbT8OmAa5jb1nrGfYWBOcggyYUQE0w/snXeaCjdvkSKWuUD+hfvlbN8pTrJTXg==",
       "path": "system.data.sqlclient/4.9.0",
       "hashPath": "system.data.sqlclient.4.9.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.Lightweight/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-a4OLB4IITxAXJeV74MDx49Oq2+PsF6Sml54XAFv+2RyWwtDBcabzoxiiJRhdhx+gaohLh4hEGCLQyBozXoQPqA==",
+      "path": "system.reflection.emit.lightweight/4.7.0",
+      "hashPath": "system.reflection.emit.lightweight.4.7.0.nupkg.sha512"
     }
   }
 }

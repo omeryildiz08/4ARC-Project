@@ -1,23 +1,45 @@
 import React, { use, useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Row, Col, Button } from "antd";
+import { Card, Row, Col, Button, Modal, message } from "antd";
 import { useNavigate } from "react-router-dom";
-
+import { DeleteOutlined } from '@ant-design/icons';
 
 function TeamList() {
+  const [teams, setTeams] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const navigate = useNavigate();
 
-const [teams,setTeams] = useState([]);
-const navigate = useNavigate();
+  useEffect(() => {
+    fetchTeams();
+  }, []);
 
-useEffect(() =>
-{
-axios.get("https://localhost:7216/api/Teams/WithProjects")
-.then((res) => setTeams(res.data))
-.catch((err) => console.log(err));
+  const fetchTeams = async () => {
+    try {
+      const response = await axios.get("https://localhost:7216/api/Teams/WithProjects");
+      setTeams(response.data);
+    } catch (err) {
+      console.error("Takımlar yüklenirken hata:", err);
+      message.error("Takımlar yüklenirken bir hata oluştu");
+    }
+  };
 
-},[]);
+  const handleDeleteClick = (team) => {
+    setSelectedTeam(team);
+    setIsModalVisible(true);
+  };
 
-
+  const handleDeleteConfirm = async () => {
+    try {
+      await axios.delete(`https://localhost:7216/api/Teams/${selectedTeam.teamId}/Project`);
+      message.success("Proje başarıyla silindi");
+      setIsModalVisible(false);
+      fetchTeams(); // Listeyi yenile
+    } catch (err) {
+      console.error("Proje silinirken hata:", err);
+      message.error("Proje silinirken bir hata oluştu");
+    }
+  };
 
   return (
     <div style={{ padding: "24px" }}>
@@ -34,6 +56,14 @@ axios.get("https://localhost:7216/api/Teams/WithProjects")
                 <Button type="primary" onClick={() => navigate(`/teams/${team.teamId}`)}>
                   Gantt Şemasını Gör
                 </Button>,
+                <Button 
+                  type="text" 
+                  danger 
+                  icon={<DeleteOutlined />}
+                  onClick={() => handleDeleteClick(team)}
+                >
+                  Sil
+                </Button>
               ]}
             >
               <p>Proje: {team.projectName}</p>
@@ -41,8 +71,23 @@ axios.get("https://localhost:7216/api/Teams/WithProjects")
           </Col>
         ))}
       </Row>
+
+      <Modal
+        title="Projeyi Sil"
+        open={isModalVisible}
+        onOk={handleDeleteConfirm}
+        onCancel={() => setIsModalVisible(false)}
+        okText="Evet"
+        cancelText="İptal"
+        okButtonProps={{ danger: true }}
+      >
+        <p>
+          <strong>{selectedTeam?.teamName}</strong> takımının projesini silmek istediğinizden emin misiniz?
+          Bu işlem geri alınamaz ve projeye ait tüm veriler silinecektir.
+        </p>
+      </Modal>
     </div>
-  )
+  );
 }
 
-export default TeamList
+export default TeamList;

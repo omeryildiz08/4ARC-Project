@@ -13,8 +13,12 @@ const GanttChart = ({ data, onTaskAdded }) => {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    // Üyeleri data'dan filtrele
-    const memberTasks = data.filter(task => task.memberId);
+    // Sadece ana üye task'larını filtrele
+    const memberTasks = data.filter(task => 
+      task.memberId && 
+      task.type === 'task' && 
+      !task.name.includes('(')
+    );
     console.log("Filtrelenmiş üyeler:", memberTasks);
     setMembers(memberTasks);
   }, [data]);
@@ -95,28 +99,16 @@ const GanttChart = ({ data, onTaskAdded }) => {
       <Gantt
         tasks={data}
         viewMode={ViewMode.Day}
-        listCellWidth="300px"
+        listCellWidth="500px"
         columnWidth={65}
         locale="tr"
         onDateChange={handleTaskClick}
         onProgressChange={handleProgressChange}
-        TooltipContent={({ task }) => {
-          return (
-            <div className="p-2 bg-white rounded shadow">
-              <h3 className="font-bold">{task.name}</h3>
-              <p>Başlangıç: {task.start.toLocaleDateString('tr-TR')}</p>
-              <p>Bitiş: {task.end.toLocaleDateString('tr-TR')}</p>
-              {task.progress !== undefined && (
-                <p>İlerleme: %{task.progress}</p>
-              )}
-            </div>
-          );
-        }}
         TaskListHeader={({ headerHeight }) => (
-          <div className="flex items-center h-full">
-            <div className="w-1/2 font-bold">Görev Adı</div>
-            <div className="w-1/4 font-bold">Başlangıç</div>
-            <div className="w-1/4 font-bold">Bitiş</div>
+          <div className="flex items-center h-full bg-gray-100 px-4">
+            <div className="w-2/5 font-bold text-gray-700">Görev Adı</div>
+            <div className="w-3/10 font-bold text-gray-700 text-right pr-4">Başlangıç</div>
+            <div className="w-3/10 font-bold text-gray-700 text-right pr-4">Bitiş</div>
           </div>
         )}
         TaskListTable={({ rowHeight, rowWidth, tasks, fontFamily, fontSize }) => (
@@ -124,21 +116,54 @@ const GanttChart = ({ data, onTaskAdded }) => {
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className="flex items-center border-b"
+                className="flex items-center border-b hover:bg-gray-50 transition-colors"
                 style={{
                   height: rowHeight,
                   fontFamily,
                   fontSize,
                   cursor: task.memberId ? 'pointer' : 'default',
-                  backgroundColor: task.memberId ? '#f0f7ff' : 'transparent'
+                  backgroundColor: task.memberId ? '#f0f7ff' : 'transparent',
+                  padding: '0.5rem 1rem'
                 }}
                 onClick={() => task.memberId && handleTaskClick(task)}
               >
-                <div className="w-1/2">{task.name}</div>
-                <div className="w-1/4">{task.start.toLocaleDateString('tr-TR')}</div>
-                <div className="w-1/4">{task.end.toLocaleDateString('tr-TR')}</div>
+                <div className="w-2/5 truncate" title={task.name}>
+                  {task.name}
+                </div>
+                <div className="w-3/10 text-gray-600 text-right pr-4">
+                  {task.start.toLocaleDateString('tr-TR')}
+                </div>
+                <div className="w-3/10 text-gray-600 text-right pr-4">
+                  {task.end.toLocaleDateString('tr-TR')}
+                </div>
               </div>
             ))}
+          </div>
+        )}
+        ganttHeight={600}
+        barHeight={30}
+        barCornerRadius={4}
+        barBackgroundColor="#e1bee7"
+        progressColor="#9c27b0"
+        arrowColor="#666"
+        rowHeight={44}
+        todayColor="#fafafa"
+        TooltipContent={({ task }) => (
+          <div className="p-3 bg-white rounded-lg shadow-lg border border-gray-200">
+            <h3 className="font-bold text-lg mb-2">{task.name}</h3>
+            <div className="space-y-1 text-sm">
+              <p className="text-gray-600">
+                <span className="font-semibold">Başlangıç:</span> {task.start.toLocaleDateString('tr-TR')}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-semibold">Bitiş:</span> {task.end.toLocaleDateString('tr-TR')}
+              </p>
+              {task.progress !== undefined && (
+                <p className="text-gray-600">
+                  <span className="font-semibold">İlerleme:</span> %{task.progress}
+                </p>
+              )}
+            </div>
           </div>
         )}
       />

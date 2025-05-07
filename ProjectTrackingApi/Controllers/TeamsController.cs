@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Data;
 using ProjectTrackingApi.Models;
 using ProjectTrackingApi.Models.Dtos;
+using Dapper;
 
 namespace ProjectTrackingApi.Controllers
 {
@@ -211,10 +212,62 @@ namespace ProjectTrackingApi.Controllers
             return Ok(teamWithProjects);
         }
 
+        [HttpDelete("{teamId}/Project")]
+        public async Task<IActionResult> DeleteTeamProject(int teamId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    await connection.OpenAsync();
 
+                    // Önce projeyi bul
+                    var project = await connection.QueryFirstOrDefaultAsync<Project>(
+                        "SELECT * FROM Projects WHERE TeamId = @TeamId",
+                        new { TeamId = teamId }
+                    );
 
+                    if (project == null)
+                    {
+                        return NotFound("Proje bulunamadı");
+                    }
 
+                    // Transaction başlat
+                    using (var transaction = connection.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Önce projeye ait task'ları sil
+                            await connection.ExecuteAsync(
+                                "DELETE FROM Tasks WHERE ProjectId = @ProjectId",
+                                new { ProjectId = project.ProjectId },
+                                transaction
+                            );
 
+                            // Sonra projeyi sil
+                            await connection.ExecuteAsync(
+                                "DELETE FROM Projects WHERE ProjectId = @ProjectId",
+                                new { ProjectId = project.ProjectId },
+                                transaction
+                            );
+
+                            // Transaction'ı onayla
+                            transaction.Commit();
+                            return Ok("Proje ve ilgili tüm veriler başarıyla silindi");
+                        }
+                        catch (Exception ex)
+                        {
+                            // Hata durumunda transaction'ı geri al
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Bir hata oluştu: {ex.Message}");
+            }
+        }
     }
-
 }

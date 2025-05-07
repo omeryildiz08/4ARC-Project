@@ -82,7 +82,7 @@ function transformProjectToGanttData(data) {
             console.log("İşlenen üye:", member);
             const memberTask = {
                 id: `${taskIdCounter++}`,
-                name: `${member.name} (${member.role})`,
+                name: member.name,
                 start: dev,
                 end: prod,
                 progress: 0,
@@ -93,15 +93,15 @@ function transformProjectToGanttData(data) {
                 styles: { progressColor: '#90caf9', progressSelectedColor: '#64b5f6' }
             };
             ganttTasks.push(memberTask);
-            memberTasks.set(member.memberId, memberTask.id); // Üye ID'sini ve task ID'sini eşleştir
+            memberTasks.set(member.memberId, memberTask.id);
         });
     }
 
     // Mevcut task'ları ekle
     if (data.tasks && data.tasks.length > 0) {
         data.tasks.forEach((task) => {
-            const memberTaskId = memberTasks.get(task.memberId); // Task'ın üyesinin ID'sini bul
-            const member = members.find(m => m.memberId === task.memberId); // Üye bilgisini bul
+            const memberTaskId = memberTasks.get(task.memberId);
+            const member = members.find(m => m.memberId === task.memberId);
             
             ganttTasks.push({
                 id: `${taskIdCounter++}`,
@@ -110,7 +110,7 @@ function transformProjectToGanttData(data) {
                 end: new Date(task.endDate),
                 progress: 0,
                 type: 'task',
-                project: memberTaskId || '1', // Eğer üye bulunduysa onun altında göster
+                project: memberTaskId || '1',
                 projectId: task.projectId,
                 memberId: task.memberId,
                 styles: { 
