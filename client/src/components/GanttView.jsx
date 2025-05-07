@@ -6,27 +6,46 @@ import transformProjectToGanttData from './transformProjectToGanttData';
 import { Spin, Alert } from 'antd';
 
 function GanttView() {
-  const { id } = useParams(); // URL'deki teamId'yi alır
+  const { id } = useParams();
   const [ganttData, setGanttData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchProjectDetails = async () => {
-      try {
-        const response = await axios.get(`https://localhost:7216/api/Teams/${id}/ProjectDetails`);
-        const formattedData = transformProjectToGanttData(response.data);
-        setGanttData(formattedData);
-      } catch (err) {
-        console.error('Hata:', err);
-        setError("Veri alınamadı.");
-      } finally {
-        setLoading(false);
+  const fetchProjectDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`https://localhost:7216/api/Teams/${id}/ProjectDetails`);
+      console.log("Backend'den gelen ham veri:", response.data);
+      
+      if (!response.data || !response.data.project) {
+        throw new Error("Proje verisi bulunamadı");
       }
-    };
 
+      console.log("Proje ID:", response.data.project.projectId);
+
+      if (!response.data.members) {
+        console.warn("Üye verisi bulunamadı");
+        response.data.members = [];
+      }
+
+      const formattedData = transformProjectToGanttData(response.data);
+      console.log("Gantt için formatlanmış veri:", formattedData);
+      setGanttData(formattedData);
+    } catch (err) {
+      console.error('Hata:', err);
+      setError("Veri alınamadı.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProjectDetails();
   }, [id]);
+
+  const handleTaskAdded = () => {
+    fetchProjectDetails();
+  };
 
   if (loading) return <Spin tip="Yükleniyor..." />;
   if (error) return <Alert type="error" message={error} />;
@@ -34,7 +53,7 @@ function GanttView() {
   return (
     <div style={{ padding: 24 }}>
       <h2>Proje Aşamaları (Gantt)</h2>
-      <GanttChart data={ganttData} />
+      <GanttChart data={ganttData} onTaskAdded={handleTaskAdded} />
     </div>
   );
 }

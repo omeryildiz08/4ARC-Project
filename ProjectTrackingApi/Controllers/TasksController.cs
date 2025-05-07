@@ -44,32 +44,61 @@ namespace ProjectTrackingApi.Controllers
             return Ok(tasks);
         }
 
-
         [HttpPost]
         public IActionResult AddTask([FromBody] TaskItem task)
         {
-            if(string.IsNullOrEmpty(task.Title))
+            try
             {
-                return BadRequest("Title is required.");
+                if(string.IsNullOrEmpty(task.Title))
+                {
+                    return BadRequest("Title is required.");
+                }
+
+                if(task.ProjectId <= 0)
+                {
+                    return BadRequest("ProjectId is required.");
+                }
+
+                if(task.MemberId <= 0)
+                {
+                    return BadRequest("MemberId is required.");
+                }
+
+                string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                        INSERT INTO Tasks (ProjectId, MemberId, Title, Description, StartDate, EndDate) 
+                        VALUES (@ProjectId, @MemberId, @Title, @Description, @StartDate, @EndDate);
+                        SELECT SCOPE_IDENTITY();";
+
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
+                    command.Parameters.AddWithValue("@MemberId", task.MemberId);
+                    command.Parameters.AddWithValue("@Title", task.Title);
+                    command.Parameters.AddWithValue("@Description", task.Description ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@StartDate", task.StartDate);
+                    command.Parameters.AddWithValue("@EndDate", task.EndDate);
+
+                    connection.Open();
+                    int newTaskId = Convert.ToInt32(command.ExecuteScalar());
+
+                    if (newTaskId > 0)
+                    {
+                        task.TaskId = newTaskId;
+                        return Ok(task);
+                    }
+                    else
+                    {
+                        return StatusCode(500, "Failed to add task.");
+                    }
+                }
             }
-
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            catch (Exception ex)
             {
-                string query = "INSERT INTO Tasks (ProjectId, MemberId, Title, Description, StartDate, EndDate) VALUES (@ProjectId, @MemberId, @Title, @Description, @StartDate, @EndDate); SELECT SCOPE_IDENTITY();";
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
-                command.Parameters.AddWithValue("@MemberId", task.MemberId);
-                command.Parameters.AddWithValue("@Title", task.Title);
-                command.Parameters.AddWithValue("@Description", task.Description ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@StartDate", task.StartDate);
-                command.Parameters.AddWithValue("@EndDate", task.EndDate);
-
-                connection.Open();
-                int result = command.ExecuteNonQuery();
-                return result > 0 ? Ok("Task added successfully.") : BadRequest("Failed to add task.");
+                return StatusCode(500, $"An error occurred while adding the task: {ex.Message}");
             }
         }
     }

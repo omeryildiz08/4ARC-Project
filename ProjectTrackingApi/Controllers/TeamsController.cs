@@ -104,7 +104,9 @@ namespace ProjectTrackingApi.Controllers
 
 
                 //proje bilgilerini al
-                string projectQuery = @"SELECT ProjectName, DevDate, TestDate, UATDate,ProdDate FROM Projects WHERE TeamId = @TeamId";
+                string projectQuery = @"SELECT ProjectId, ProjectName, DevDate, TestDate, UATDate, ProdDate 
+                                      FROM Projects 
+                                      WHERE TeamId = @TeamId";
 
                 using (SqlCommand cmd = new SqlCommand(projectQuery, conn))
                 {
@@ -115,6 +117,7 @@ namespace ProjectTrackingApi.Controllers
                         {
                             dto.Project = new TeamProjectDetailsDto.ProjectInfo
                             {
+                                ProjectId = Convert.ToInt32(reader["ProjectId"]),
                                 ProjectName = reader["ProjectName"].ToString(),
                                 DevDate = Convert.ToDateTime(reader["DevDate"]),
                                 TestDate = Convert.ToDateTime(reader["TestDate"]),
@@ -127,7 +130,7 @@ namespace ProjectTrackingApi.Controllers
 
 
                 //üye bilgilerini al
-                string memberQuery = "SELECT Name, Role FROM Members WHERE TeamId = @TeamId";
+                string memberQuery = "SELECT MemberId, Name, Role FROM Members WHERE TeamId = @TeamId";
                 using (SqlCommand cmd = new SqlCommand(memberQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@TeamId", id);
@@ -138,8 +141,35 @@ namespace ProjectTrackingApi.Controllers
                         {
                             dto.Members.Add(new TeamProjectDetailsDto.MemberInfo
                             {
+                                MemberId = Convert.ToInt32(reader["MemberId"]),
                                 Name = reader["Name"].ToString(),
                                 Role = reader["Role"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                // Task'ları al
+                string tasksQuery = @"SELECT TaskId, ProjectId, MemberId, Title, Description, StartDate, EndDate 
+                                    FROM Tasks 
+                                    WHERE ProjectId = @ProjectId";
+                using (SqlCommand cmd = new SqlCommand(tasksQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProjectId", dto.Project.ProjectId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dto.Tasks = new List<TeamProjectDetailsDto.TaskInfo>();
+                        while (reader.Read())
+                        {
+                            dto.Tasks.Add(new TeamProjectDetailsDto.TaskInfo
+                            {
+                                TaskId = Convert.ToInt32(reader["TaskId"]),
+                                ProjectId = Convert.ToInt32(reader["ProjectId"]),
+                                MemberId = Convert.ToInt32(reader["MemberId"]),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"]?.ToString(),
+                                StartDate = Convert.ToDateTime(reader["StartDate"]),
+                                EndDate = Convert.ToDateTime(reader["EndDate"])
                             });
                         }
                     }
