@@ -14,6 +14,9 @@ const Navbar = () => {
           <Menu.Item key="create">
             <Link to="/create">Yeni Oluştur</Link>
           </Menu.Item>
+          <Menu.Item key="all-projects">
+            <Link to="/all-projects">Tüm Projeler</Link>
+          </Menu.Item>
         </Menu>
       </Layout.Header>
     );

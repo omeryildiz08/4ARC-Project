@@ -99,16 +99,16 @@ const GanttChart = ({ data, onTaskAdded }) => {
       <Gantt
         tasks={data}
         viewMode={ViewMode.Day}
-        listCellWidth="500px"
+        listCellWidth="380px"
         columnWidth={65}
         locale="tr"
         onDateChange={handleTaskClick}
         onProgressChange={handleProgressChange}
         TaskListHeader={({ headerHeight }) => (
-          <div className="flex items-center h-full bg-gray-100 px-4">
-            <div className="w-2/5 font-bold text-gray-700">Görev Adı</div>
-            <div className="w-3/10 font-bold text-gray-700 text-right pr-4">Başlangıç</div>
-            <div className="w-3/10 font-bold text-gray-700 text-right pr-4">Bitiş</div>
+          <div className="flex items-center h-full bg-gray-100 px-4" style={{fontWeight:'bold', fontSize:15}}>
+            <div style={{width:'55%', minWidth:120}}>Görev Adı</div>
+            <div style={{width:'22.5%', minWidth:70, textAlign:'right', paddingRight:12}}>Başlangıç</div>
+            <div style={{width:'22.5%', minWidth:70, textAlign:'right', paddingRight:12}}>Bitiş</div>
           </div>
         )}
         TaskListTable={({ rowHeight, rowWidth, tasks, fontFamily, fontSize }) => (
@@ -118,22 +118,54 @@ const GanttChart = ({ data, onTaskAdded }) => {
                 key={task.id}
                 className="flex items-center border-b hover:bg-gray-50 transition-colors"
                 style={{
-                  height: rowHeight,
+                  height: 54,
                   fontFamily,
-                  fontSize,
+                  fontSize: 15,
                   cursor: task.memberId ? 'pointer' : 'default',
                   backgroundColor: task.memberId ? '#f0f7ff' : 'transparent',
-                  padding: '0.5rem 1rem'
+                  padding: '0.5rem 1rem',
+                  lineHeight: '1.2',
                 }}
                 onClick={() => task.memberId && handleTaskClick(task)}
               >
-                <div className="w-2/5 truncate" title={task.name}>
+                <div
+                  style={{
+                    width: '55%',
+                    minWidth: 120,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  title={task.name}
+                >
                   {task.name}
                 </div>
-                <div className="w-3/10 text-gray-600 text-right pr-4">
+                <div
+                  style={{
+                    width: '22.5%',
+                    minWidth: 70,
+                    color: '#666',
+                    textAlign: 'right',
+                    paddingRight: 12,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   {task.start.toLocaleDateString('tr-TR')}
                 </div>
-                <div className="w-3/10 text-gray-600 text-right pr-4">
+                <div
+                  style={{
+                    width: '22.5%',
+                    minWidth: 70,
+                    color: '#666',
+                    textAlign: 'right',
+                    paddingRight: 12,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
                   {task.end.toLocaleDateString('tr-TR')}
                 </div>
               </div>
@@ -146,7 +178,7 @@ const GanttChart = ({ data, onTaskAdded }) => {
         barBackgroundColor="#e1bee7"
         progressColor="#9c27b0"
         arrowColor="#666"
-        rowHeight={44}
+        rowHeight={54}
         todayColor="#fafafa"
         TooltipContent={({ task }) => (
           <div className="p-3 bg-white rounded-lg shadow-lg border border-gray-200">

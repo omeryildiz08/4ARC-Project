@@ -5,7 +5,7 @@ import Dashboard from './components/Dashboard';
 import GanttView from './components/GanttView';
 import TeamList from './components/TeamList';
 import TeamMemberPage from './components/TeamMemberPage';
-
+import AllProjectsGantt from './components/AllProjectsGantt';
 import TeamProjectCreateForm from './components/TeamProjectCreateForm';
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
           <Route path="/teams/:id" element={<GanttView />} />
           <Route path="/create" element={<TeamProjectCreateForm />} />
           <Route path="/teams/:teamId/members" element={<TeamMemberPage />} />
+          <Route path="/all-projects" element={<AllProjectsGantt />} />
         </Routes>
       </Layout.Content>
     </Layout>
